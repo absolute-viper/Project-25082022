@@ -1,6 +1,6 @@
 import cv2
 import os
-filename = 'pic2.jpg'
+filename = 'F:/profile3.jpg'
 img = cv2.imread(filename)  # Path of an image
 faceCascade = cv2.CascadeClassifier('haarcascades/haarcascade_frontalface_default.xml')
 faces = faceCascade.detectMultiScale(img, 1.1, 4)

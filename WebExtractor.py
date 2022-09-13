@@ -1,7 +1,9 @@
 import urllib.request
 import pandas as pd
 
-df = pd.read_csv("test.csv", usecols=["Avatar URL"])
-i = 0
-for i in range(len(df)):
-    urllib.request.urlretrieve(df.loc[i, "Avatar URL"], "img_" + str(i) + ".jpg")
+
+df = pd.read_csv("scrap_1.csv")
+print(df)
+for i in range(295, len(df)):
+    urllib.request.urlretrieve(df.loc[i, "Img_URL"], ("DATA/"+df.loc[i, "Username"] + ".jpg"))
+print("Download Complete")
