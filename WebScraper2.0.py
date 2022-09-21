@@ -5,7 +5,7 @@ from instaloader import Profile
 
 L = instaloader.Instaloader()
 USER = 'ritik._.ks'
-PASSWORD = 'Shiva@1234'
+PASSWORD = 'pass'
 L.login(USER, PASSWORD)
 
 USERNAME = 'ig_rajpatel'
