@@ -5,13 +5,13 @@ from instaloader import Profile
 
 L = instaloader.Instaloader()
 USER = 'ritik._.ks'
-PASSWORD = 'pass'
+PASSWORD = 'Shiva@1234'
 L.login(USER, PASSWORD)
 
 USERNAME = 'ig_rajpatel'
 profile = Profile.from_username(L.context, USERNAME)
 
-f = open('scrap_1.csv', 'w', encoding='UTF8')
+f = open('scrap_div.divs.csv', 'w', encoding='UTF8')
 writer = csv.writer(f)
 header = ['Username', 'Img_URL']
 writer.writerow(header)

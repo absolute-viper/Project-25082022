@@ -6,6 +6,7 @@ from deepface import DeepFace
 import tensorflow as tf
 import numpy as np
 import time
+import asyncio
 
 models = [
     "VGG-Face",
@@ -28,9 +29,8 @@ with tf.device('/GPU:0'):
     directory = 'E:/Codes/Application/Project25082022/DATA/'
 
 
-    def face_recog(refined_arr):
-        count = 0
-        for filename in refined_arr:
+    async def face_recog():
+        for filename in os.listdir(directory):
             try:
                 profile_2 = cv2.imread(directory + filename)
                 profile_2 = cv2.cvtColor(profile_2, cv2.COLOR_BGR2RGB)
@@ -40,38 +40,32 @@ with tf.device('/GPU:0'):
                 if str(compare[0]) == 'True':
                     accuracy = face_recognition.face_distance([encode_1], encode_2)
                     if accuracy < 0.5:
-                        print(filename + " Possible Match, Accuracy: " + str(accuracy))
-                        count += 1
-                        cv2.imshow("Match_" + filename, profile_2)
-                        cv2.waitKey(5000)
+                        print("Face_Recognition_Match:", filename)
 
             except IndexError:
-                print(filename + " Face not Visible")
-        print("Faces matched:", count)
+                continue
 
 
     flag = True
-
     f = open('trial_run1.csv', 'w', encoding='UTF8')
     writer = csv.writer(f, lineterminator='\n')
     header = ['Name']
     writer.writerow(header)
 
 
-    def deep_face():
+    async def deep_face():
         a = np.array([])
         for filename in os.listdir(directory):
             try:
-                result = DeepFace.verify(img_org, directory + filename)#, detector_backend='mtcnn')
+                result = DeepFace.verify(img_org, directory + filename, prog_bar=False)
                 if result['verified'] == flag:
                     a = np.append(a, filename)
-                    print(filename)
+                    print("Deepface_Match:", filename)
                     writer.writerow([filename])
             except ValueError:
                 continue
-        print("Size of array:", len(a))
-        face_recog(a)
 
-
-    deep_face()
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(asyncio.gather(deep_face(), face_recog()))
+    loop.close()
     print("Time Elapsed:", time.time() - start_time)
